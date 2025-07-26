@@ -2,6 +2,9 @@ from bitcoinprice import run_fetch_job
 from fastapi import FastAPI
 app = FastAPI()
 
+@app.get("/")
+def root():
+    return {"message": "FastAPI is running"}
 
 @app.get("/run")
 def run_job():
