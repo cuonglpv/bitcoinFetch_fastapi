@@ -1,14 +1,23 @@
 import requests
+import os
 import psycopg2
 from datetime import datetime
 
 def run_fetch_job():
     # PostgreSQL connection info
-    DB_HOST = 'localhost'  # or 'localhost' if not using Docker
-    DB_NAME = 'postgres'
-    DB_USER = 'postgres'
-    DB_PASS = 'postgres'
-    DB_PORT = '5432'
+    # DB_HOST = 'localhost'  # or 'localhost' if not using Docker
+    # DB_NAME = 'postgres'
+    # DB_USER = 'postgres'
+    # DB_PASS = 'postgres'
+    # DB_PORT = '5432'
+    # db_url = os.environ.get("DATABASE_URL")
+
+    DB_HOST = "dpg-d22ekuvgi27c73eso4d0-a.oregon-postgres.render.com"
+    DB_NAME = "bitcoinprice_q1kp"
+    DB_USER = "bitcoinprice_q1kp_user"
+    DB_PASS = "pVfh5ZkxguTrPeoxqIDUIhXMQXmNwTwo"
+    DB_PORT = "5432"
+
 
     def fetch_bitcoin_price():
         url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
@@ -24,6 +33,7 @@ def run_fetch_job():
                 password=DB_PASS,
                 port=DB_PORT
             )
+            # connection = psycopg2.connect(dsn=db_url) # Use DATABASE_URL for Render call API online
             cursor = connection.cursor()
             cursor.execute("INSERT INTO bitcoin_price (price_usd, timestamp) VALUES (%s, %s)", (price, datetime.now()))
             connection.commit()
